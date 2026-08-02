@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="About"
+  description="1881 is the Wellesley Standard — an editorial media project covering Wellesley, Massachusetts."
+>
+  <article class="about">
+    <header class="about__header">
+      <p class="about__kicker">About</p>
+      <h1>The Wellesley Standard</h1>
+    </header>
+
+    <div class="about__body">
+      <p>
+        1881 is named for the year Wellesley was founded — and for the standard we're trying to hold ourselves to.
+        This isn't a news outlet, and it isn't a blog. It's an editorial magazine about one town: the homes, the
+        streets, the events, and the everyday texture of living here.
+      </p>
+      <p>
+        We cover Town Meeting in plain English instead of committee minutes. We feature homes for their design and
+        their story, not their listing price. We think Wellesley deserves coverage as polished as the town itself —
+        so that's what we're building.
+      </p>
+      <p>Have a home, a street, or a story we should know about? We'd love to hear from you.</p>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .about__header {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-3) var(--space-3);
+  }
+
+  .about__kicker {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-1);
+  }
+
+  .about__header h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .about__body {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    padding: 0 var(--space-3) var(--space-6);
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+  }
+
+  .about__body p {
+    margin: 0 0 var(--space-3);
+  }
+</style>

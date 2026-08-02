@@ -1,0 +1,286 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+
+interface Props {
+  title: string;
+  description: string;
+  image?: string;
+}
+
+const { title, description, image } = Astro.props;
+const canonicalURL = new URL(Astro.url.pathname, Astro.site);
+
+const navItems = [
+  { href: '/living-here', label: 'Living Here' },
+  { href: '/house-of-the-week', label: 'House of the Week' },
+  { href: '/streets-of-wellesley', label: 'Streets of Wellesley' },
+  { href: '/events', label: 'Events' },
+  { href: '/about', label: 'About' },
+];
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonicalURL} />
+    <title>{title} · 1881 — The Wellesley Standard</title>
+    <meta name="description" content={description} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={`${title} · 1881`} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalURL} />
+    {image && <meta property="og:image" content={image} />}
+    <meta name="twitter:card" content="summary_large_image" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header">
+      <div class="site-header__inner">
+        <Logo variant="compact" />
+        <button
+          class="nav-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="primary-nav"
+          data-nav-toggle
+        >
+          <span class="sr-only">Menu</span>
+          <span class="nav-toggle__icon" aria-hidden="true"></span>
+        </button>
+        <nav class="site-nav" aria-label="Primary" id="primary-nav" data-nav>
+          <ul>
+            {
+              navItems.map((item) => (
+                <li>
+                  <a href={item.href} aria-current={Astro.url.pathname.startsWith(item.href) ? 'page' : undefined}>
+                    {item.label}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <script>
+      const toggle = document.querySelector<HTMLButtonElement>('[data-nav-toggle]');
+      const nav = document.querySelector<HTMLElement>('[data-nav]');
+      toggle?.addEventListener('click', () => {
+        const isOpen = nav?.dataset.open === 'true';
+        nav?.toggleAttribute('data-open', !isOpen);
+        toggle.setAttribute('aria-expanded', String(!isOpen));
+      });
+      nav?.querySelectorAll('a').forEach((link) =>
+        link.addEventListener('click', () => {
+          nav.removeAttribute('data-open');
+          toggle?.setAttribute('aria-expanded', 'false');
+        })
+      );
+    </script>
+
+    <main id="main">
+      <slot />
+    </main>
+
+    <footer class="site-footer">
+      <div class="site-footer__inner">
+        <Logo variant="compact" />
+        <nav aria-label="Footer">
+          <ul>
+            {
+              navItems.map((item) => (
+                <li>
+                  <a href={item.href}>{item.label}</a>
+                </li>
+              ))
+            }
+          </ul>
+        </nav>
+        <p class="site-footer__copy">&copy; {new Date().getFullYear()} 1881. Wellesley, Massachusetts.</p>
+      </div>
+    </footer>
+
+    <style>
+      .skip-link {
+        position: absolute;
+        left: -9999px;
+        top: 0;
+        background: var(--color-ink);
+        color: var(--color-paper);
+        padding: var(--space-1) var(--space-2);
+        z-index: var(--z-toast);
+      }
+      .skip-link:focus {
+        left: var(--space-2);
+        top: var(--space-2);
+      }
+
+      .site-header {
+        position: sticky;
+        top: 0;
+        z-index: var(--z-sticky);
+        background: var(--color-paper);
+        border-bottom: 1px solid var(--color-hairline);
+      }
+
+      .site-header__inner {
+        max-width: var(--page-max);
+        margin: 0 auto;
+        padding: var(--space-2) var(--space-3);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+      }
+
+      .sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+      }
+
+      .nav-toggle {
+        display: none;
+        background: none;
+        border: none;
+        padding: var(--space-1);
+        cursor: pointer;
+      }
+
+      .nav-toggle__icon,
+      .nav-toggle__icon::before,
+      .nav-toggle__icon::after {
+        display: block;
+        width: 1.4rem;
+        height: 2px;
+        background: var(--color-ink);
+        position: relative;
+        transition: transform 0.2s var(--ease-out-expo);
+      }
+
+      .nav-toggle__icon::before,
+      .nav-toggle__icon::after {
+        content: '';
+        position: absolute;
+        left: 0;
+      }
+
+      .nav-toggle__icon::before {
+        top: -6px;
+      }
+
+      .nav-toggle__icon::after {
+        top: 6px;
+      }
+
+      .site-nav ul {
+        display: flex;
+        gap: var(--space-3);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+      }
+
+      .site-nav a {
+        font-family: var(--font-sans);
+        font-size: var(--text-sm);
+        font-weight: 500;
+        text-decoration: none;
+        color: var(--color-ink);
+        padding-bottom: 0.3rem;
+        border-bottom: 2px solid transparent;
+      }
+
+      .site-nav a:hover,
+      .site-nav a[aria-current='page'] {
+        border-bottom-color: var(--color-accent);
+      }
+
+      @media (max-width: 42rem) {
+        .nav-toggle {
+          display: block;
+        }
+
+        .site-nav {
+          display: none;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          right: 0;
+          background: var(--color-paper);
+          border-bottom: 1px solid var(--color-hairline);
+          padding: var(--space-2) var(--space-3) var(--space-3);
+        }
+
+        .site-nav[data-open] {
+          display: block;
+        }
+
+        .site-nav ul {
+          flex-direction: column;
+          gap: var(--space-2);
+        }
+
+        .site-header__inner {
+          position: relative;
+        }
+      }
+
+      main {
+        min-height: 60vh;
+      }
+
+      .site-footer {
+        margin-top: var(--space-6);
+        border-top: 1px solid var(--color-hairline);
+        padding: var(--space-4) var(--space-3);
+      }
+
+      .site-footer__inner {
+        max-width: var(--page-max);
+        margin: 0 auto;
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        gap: var(--space-3);
+      }
+
+      .site-footer__inner nav ul {
+        display: flex;
+        gap: var(--space-3);
+        list-style: none;
+        margin: 0;
+        padding: 0;
+        flex-wrap: wrap;
+      }
+
+      .site-footer__inner nav a {
+        font-family: var(--font-sans);
+        font-size: var(--text-sm);
+        text-decoration: none;
+        color: var(--color-ink-muted);
+      }
+
+      .site-footer__copy {
+        font-family: var(--font-sans);
+        font-size: var(--text-xs);
+        color: var(--color-ink-muted);
+        margin: 0;
+        width: 100%;
+        order: 3;
+      }
+    </style>
+  </body>
+</html>

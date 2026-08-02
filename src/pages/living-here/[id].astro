@@ -1,0 +1,90 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('living-here');
+  return entries.map((entry) => ({ params: { id: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const dateFormatter = new Intl.DateTimeFormat('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.dek} image={entry.data.heroImage}>
+  <article class="story">
+    <header class="story__header">
+      <p class="story__kicker">Living Here</p>
+      <h1>{entry.data.title}</h1>
+      <p class="story__dek">{entry.data.dek}</p>
+      <time datetime={entry.data.publishDate.toISOString()}>{dateFormatter.format(entry.data.publishDate)}</time>
+    </header>
+
+    {entry.data.heroImage && <img class="story__hero" src={entry.data.heroImage} alt={entry.data.heroAlt ?? ''} />}
+
+    <div class="story__body">
+      <Content />
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .story {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-3) var(--space-6);
+  }
+
+  .story__header {
+    max-width: var(--content-max);
+    margin: 0 auto var(--space-4);
+    text-align: left;
+  }
+
+  .story__kicker {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-1);
+  }
+
+  .story__header h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .story__dek {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+  }
+
+  .story__header time {
+    display: block;
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    margin-top: var(--space-2);
+  }
+
+  .story__hero {
+    width: 100%;
+    max-height: 34rem;
+    object-fit: cover;
+    margin-bottom: var(--space-4);
+  }
+
+  .story__body {
+    max-width: var(--content-max);
+    margin: 0 auto;
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+  }
+
+  .story__body :global(p) {
+    margin: 0 0 var(--space-3);
+  }
+</style>

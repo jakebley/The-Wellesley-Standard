@@ -1,0 +1,108 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const entries = (await getCollection('house-of-the-week')).sort(
+  (a, b) => b.data.publishDate.valueOf() - a.data.publishDate.valueOf()
+);
+---
+
+<BaseLayout
+  title="House of the Week"
+  description="A weekly design and lifestyle feature on the homes that define Wellesley's character — not a listing."
+>
+  <header class="page-header">
+    <p class="page-header__kicker">House of the Week</p>
+    <h1>House of the Week</h1>
+    <p class="page-header__dek">
+      A recurring look at the homes that define Wellesley's character — the people, the design, the story. Not a
+      listing.
+    </p>
+  </header>
+
+  <ul class="house-list">
+    {
+      entries.map((entry) => (
+        <li>
+          <a href={`/house-of-the-week/${entry.id}`}>
+            <img src={entry.data.heroImage} alt={entry.data.heroAlt} loading="lazy" />
+            <div class="house-list__caption">
+              {entry.data.neighborhood && <p class="house-list__neighborhood">{entry.data.neighborhood}</p>}
+              <h2>{entry.data.title}</h2>
+              <p>{entry.data.hook}</p>
+            </div>
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</BaseLayout>
+
+<style>
+  .page-header {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-5) var(--space-3) var(--space-4);
+  }
+
+  .page-header__kicker {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-accent);
+    margin: 0 0 var(--space-1);
+  }
+
+  .page-header h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .page-header__dek {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    max-width: 60ch;
+  }
+
+  .house-list {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: 0 var(--space-3) var(--space-6);
+    list-style: none;
+    display: grid;
+    gap: var(--space-4);
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  }
+
+  .house-list a {
+    display: block;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .house-list img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    margin-bottom: var(--space-2);
+  }
+
+  .house-list__neighborhood {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin: 0 0 0.25rem;
+  }
+
+  .house-list h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-1);
+  }
+
+  .house-list p:not(.house-list__neighborhood) {
+    font-family: var(--font-body);
+  }
+</style>

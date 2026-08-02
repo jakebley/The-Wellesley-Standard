@@ -1,0 +1,273 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('house-of-the-week');
+  return entries.map((entry) => ({
+    params: { id: entry.id },
+    props: { entry, all: entries.filter((e) => e.id !== entry.id) },
+  }));
+}
+
+const { entry, all } = Astro.props;
+const { Content } = await render(entry);
+const hasSidebar = entry.data.neighborhood || entry.data.yearBuilt || entry.data.style;
+const related = all.slice(0, 3);
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.hook} image={entry.data.heroImage}>
+  <article class="feature">
+    <!-- 1. Hero image + story-style title -->
+    <header class="feature__hero">
+      <img src={entry.data.heroImage} alt={entry.data.heroAlt} />
+      <div class="feature__hero-caption">
+        <p class="feature__kicker">House of the Week</p>
+        <h1>{entry.data.title}</h1>
+      </div>
+    </header>
+
+    <div class="feature__layout">
+      <div class="feature__main">
+        <!-- 2. One-line hook -->
+        <p class="feature__hook">{entry.data.hook}</p>
+
+        <!-- 3. Story body -->
+        <div class="feature__body">
+          <Content />
+        </div>
+
+        <!-- 4. Photo gallery -->
+        {
+          entry.data.gallery.length > 0 && (
+            <div class="feature__gallery">
+              {entry.data.gallery.map((photo) => (
+                <img src={photo.image} alt={photo.alt} loading="lazy" />
+              ))}
+            </div>
+          )
+        }
+
+        <!-- 6. Sponsor tag, visually separate from editorial -->
+        {
+          entry.data.sponsor && (
+            <p class="feature__sponsor">
+              Presented by <strong>{entry.data.sponsor}</strong>
+            </p>
+          )
+        }
+      </div>
+
+      <!-- 5. Optional details sidebar — no price, no square footage, no agent contact -->
+      {
+        hasSidebar && (
+          <aside class="feature__sidebar">
+            <h2>Details</h2>
+            <dl>
+              {entry.data.neighborhood && (
+                <>
+                  <dt>Neighborhood</dt>
+                  <dd>{entry.data.neighborhood}</dd>
+                </>
+              )}
+              {entry.data.yearBuilt && (
+                <>
+                  <dt>Year Built</dt>
+                  <dd>{entry.data.yearBuilt}</dd>
+                </>
+              )}
+              {entry.data.style && (
+                <>
+                  <dt>Style</dt>
+                  <dd>{entry.data.style}</dd>
+                </>
+              )}
+            </dl>
+          </aside>
+        )
+      }
+    </div>
+
+    <!-- 7. Footer: more homes we love -->
+    {
+      related.length > 0 && (
+        <footer class="feature__related">
+          <h2>More Homes We Love</h2>
+          <ul>
+            {related.map((r) => (
+              <li>
+                <a href={`/house-of-the-week/${r.id}`}>
+                  <img src={r.data.heroImage} alt={r.data.heroAlt} loading="lazy" />
+                  <span>{r.data.title}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
+        </footer>
+      )
+    }
+  </article>
+</BaseLayout>
+
+<style>
+  .feature__hero {
+    position: relative;
+  }
+
+  .feature__hero img {
+    width: 100%;
+    max-height: 34rem;
+    object-fit: cover;
+  }
+
+  .feature__hero-caption {
+    position: absolute;
+    inset: auto 0 0 0;
+    padding: var(--space-4) var(--space-3);
+    background: linear-gradient(to top, rgb(10 10 10 / 80%), transparent);
+    color: var(--color-paper);
+  }
+
+  .feature__hero-caption h1 {
+    color: var(--color-paper);
+    font-size: var(--text-2xl);
+    max-width: 24ch;
+  }
+
+  .feature__kicker {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #ffb3b3;
+    margin: 0 0 var(--space-1);
+  }
+
+  .feature__layout {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-3);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 16rem;
+    gap: var(--space-5);
+  }
+
+  @media (max-width: 55rem) {
+    .feature__layout {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .feature__hook {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 600;
+    font-size: var(--text-xl);
+    max-width: var(--content-max);
+    margin: 0 0 var(--space-4);
+  }
+
+  .feature__body {
+    font-family: var(--font-body);
+    font-size: var(--text-lg);
+    line-height: 1.7;
+    max-width: var(--content-max);
+  }
+
+  .feature__body :global(p) {
+    margin: 0 0 var(--space-3);
+  }
+
+  .feature__gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: var(--space-2);
+    margin: var(--space-4) 0;
+  }
+
+  .feature__gallery img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+  }
+
+  .feature__sponsor {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+    color: var(--color-ink-muted);
+    border-top: 1px solid var(--color-hairline);
+    padding-top: var(--space-2);
+    margin-top: var(--space-4);
+  }
+
+  .feature__sponsor strong {
+    color: var(--color-ink);
+  }
+
+  .feature__sidebar h2 {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: var(--space-2);
+  }
+
+  .feature__sidebar dl {
+    margin: 0;
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .feature__sidebar dt {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    color: var(--color-ink-muted);
+    margin-top: var(--space-2);
+  }
+
+  .feature__sidebar dd {
+    font-family: var(--font-body);
+    font-size: var(--text-base);
+    margin: 0 0 var(--space-1);
+  }
+
+  .feature__related {
+    max-width: var(--page-max);
+    margin: 0 auto;
+    padding: var(--space-4) var(--space-3) var(--space-6);
+    border-top: 1px solid var(--color-hairline);
+  }
+
+  .feature__related h2 {
+    font-size: var(--text-lg);
+    margin-bottom: var(--space-3);
+  }
+
+  .feature__related ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--space-3);
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+
+  .feature__related a {
+    display: block;
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .feature__related img {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    object-fit: cover;
+    margin-bottom: var(--space-1);
+  }
+
+  .feature__related span {
+    font-family: var(--font-sans);
+    font-size: var(--text-sm);
+  }
+</style>
