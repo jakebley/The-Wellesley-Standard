@@ -151,6 +151,11 @@ const navItems = [
 
       .nav-toggle {
         display: none;
+        align-items: center;
+        justify-content: center;
+        min-width: 44px;
+        min-height: 44px;
+        margin-right: calc(var(--space-1) * -1);
         background: none;
         border: none;
         padding: var(--space-1);
@@ -209,7 +214,7 @@ const navItems = [
 
       @media (max-width: 42rem) {
         .nav-toggle {
-          display: block;
+          display: flex;
         }
 
         .site-nav {

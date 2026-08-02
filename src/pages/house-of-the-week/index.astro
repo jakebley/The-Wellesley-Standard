@@ -22,10 +22,10 @@ const entries = (await getCollection('house-of-the-week')).sort(
 
   <ul class="house-list">
     {
-      entries.map((entry) => (
+      entries.map((entry, i) => (
         <li>
           <a href={`/house-of-the-week/${entry.id}`}>
-            <img src={entry.data.heroImage} alt={entry.data.heroAlt} loading="lazy" />
+            <img src={entry.data.heroImage} alt={entry.data.heroAlt} loading={i === 0 ? 'eager' : 'lazy'} />
             <div class="house-list__caption">
               {entry.data.neighborhood && <p class="house-list__neighborhood">{entry.data.neighborhood}</p>}
               <h2>{entry.data.title}</h2>

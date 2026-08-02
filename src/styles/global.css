@@ -101,6 +101,16 @@ a {
   color: inherit;
 }
 
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-paper);
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,

@@ -23,7 +23,11 @@ const { entry } = Astro.props;
     </header>
 
     <div class="street__photos">
-      {entry.data.photos.map((photo) => <img src={photo.image} alt={photo.alt} loading="lazy" />)}
+      {
+        entry.data.photos.map((photo, i) => (
+          <img src={photo.image} alt={photo.alt} loading={i === 0 ? 'eager' : 'lazy'} />
+        ))
+      }
     </div>
   </article>
 </BaseLayout>

@@ -51,7 +51,7 @@ const eventFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short', mont
     {
       latestHouse && (
         <a class="pillar-card pillar-card--image" href={`/house-of-the-week/${latestHouse.id}`}>
-          <img src={latestHouse.data.heroImage} alt={latestHouse.data.heroAlt} loading="lazy" />
+          <img src={latestHouse.data.heroImage} alt={latestHouse.data.heroAlt} loading="eager" />
           <div class="pillar-card__overlay">
             <p class="pillar-card__kicker">House of the Week</p>
             <h2>{latestHouse.data.title}</h2>
@@ -63,7 +63,7 @@ const eventFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short', mont
     {
       latestStreet && (
         <a class="pillar-card pillar-card--image" href={`/streets-of-wellesley/${latestStreet.id}`}>
-          <img src={latestStreet.data.photos[0].image} alt={latestStreet.data.photos[0].alt} loading="lazy" />
+          <img src={latestStreet.data.photos[0].image} alt={latestStreet.data.photos[0].alt} loading="eager" />
           <div class="pillar-card__overlay">
             <p class="pillar-card__kicker">Streets of Wellesley</p>
             <h2>{latestStreet.data.title}</h2>
@@ -123,6 +123,47 @@ const eventFormatter = new Intl.DateTimeFormat('en-US', { weekday: 'short', mont
     flex-direction: column;
     align-items: flex-start;
     gap: var(--space-3);
+  }
+
+  @keyframes hero-reveal {
+    from {
+      opacity: 0;
+      transform: translateY(14px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .hero__inner > :global(*) {
+    animation: hero-reveal 0.7s var(--ease-out-expo) backwards;
+  }
+
+  .hero__inner > :global(*:nth-child(1)) {
+    animation-delay: 0s;
+  }
+
+  .hero__inner > :global(*:nth-child(2)) {
+    animation-delay: 0.1s;
+  }
+
+  .hero__inner > :global(*:nth-child(3)) {
+    animation-delay: 0.2s;
+  }
+
+  .hero__watermark {
+    animation: hero-fade 1.2s var(--ease-out-expo) backwards;
+    animation-delay: 0.05s;
+  }
+
+  @keyframes hero-fade {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 0.035;
+    }
   }
 
   .hero h1 {

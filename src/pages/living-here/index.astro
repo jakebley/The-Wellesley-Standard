@@ -16,10 +16,12 @@ const entries = (await getCollection('living-here')).sort(
 
   <ul class="article-list">
     {
-      entries.map((entry) => (
+      entries.map((entry, i) => (
         <li>
           <a href={`/living-here/${entry.id}`}>
-            {entry.data.heroImage && <img src={entry.data.heroImage} alt={entry.data.heroAlt ?? ''} loading="lazy" />}
+            {entry.data.heroImage && (
+              <img src={entry.data.heroImage} alt={entry.data.heroAlt ?? ''} loading={i === 0 ? 'eager' : 'lazy'} />
+            )}
             <div>
               <h2>{entry.data.title}</h2>
               <p>{entry.data.dek}</p>

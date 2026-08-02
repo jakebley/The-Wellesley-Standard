@@ -19,10 +19,10 @@ const entries = (await getCollection('streets-of-wellesley')).sort(
 
   <ul class="street-list">
     {
-      entries.map((entry) => (
+      entries.map((entry, i) => (
         <li>
           <a href={`/streets-of-wellesley/${entry.id}`}>
-            <img src={entry.data.photos[0].image} alt={entry.data.photos[0].alt} loading="lazy" />
+            <img src={entry.data.photos[0].image} alt={entry.data.photos[0].alt} loading={i === 0 ? 'eager' : 'lazy'} />
             <div class="street-list__caption">
               <h2>{entry.data.title}</h2>
               <p>{entry.data.neighborhood}</p>
