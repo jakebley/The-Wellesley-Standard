@@ -1,0 +1,73 @@
+---
+import Seal from './Seal.astro';
+
+interface Props {
+  /** "full" for homepage/footer lockup, "compact" for the sticky nav bar */
+  variant?: 'full' | 'compact';
+}
+const { variant = 'full' } = Astro.props;
+---
+
+<a href="/" class:list={['logo', variant]} aria-label="1881 — The Wellesley Standard, home">
+  <span class="logo__seal"><Seal /></span>
+  <span class="logo__type">
+    <span class="logo__wordmark">1881</span>
+    <span class="logo__tagline">The Wellesley Standard</span>
+  </span>
+</a>
+
+<style>
+  .logo {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    text-decoration: none;
+    color: var(--color-ink);
+  }
+
+  .logo__seal {
+    display: block;
+    width: 3.25rem;
+    height: 3.25rem;
+    flex-shrink: 0;
+  }
+
+  .logo__seal :global(svg) {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  .logo__type {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .logo__wordmark {
+    font-family: var(--font-display);
+    font-weight: 600;
+    font-size: var(--text-lg);
+    letter-spacing: -0.02em;
+  }
+
+  .logo__tagline {
+    font-family: var(--font-sans);
+    font-size: var(--text-xs);
+    font-weight: 500;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--color-ink-muted);
+    margin-top: 0.2rem;
+    white-space: nowrap;
+  }
+
+  .logo.compact .logo__seal {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  .logo.compact .logo__tagline {
+    display: none;
+  }
+</style>

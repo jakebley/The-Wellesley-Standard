@@ -1,0 +1,24 @@
+---
+import '../styles/global.css';
+import Logo from '../components/Logo.astro';
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width" />
+    <title>1881 — The Wellesley Standard</title>
+  </head>
+  <body>
+    <div style="padding:4rem; display:flex; flex-direction:column; gap:3rem;">
+      <Logo />
+      <div style="height:1px; background:var(--color-hairline);"></div>
+      <div>
+        <p style="font-family:var(--font-sans); font-size:var(--text-xs); letter-spacing:0.08em; text-transform:uppercase; color:var(--color-accent); margin:0 0 0.5rem;">Living Here</p>
+        <h1 style="font-size:var(--text-3xl);">A Craftsman Revival on Cliff Road</h1>
+        <p style="font-family:var(--font-body); font-size:var(--text-lg); max-width:60ch;">One-line hook goes here, setting the scene for the story that follows.</p>
+      </div>
+    </div>
+  </body>
+</html>

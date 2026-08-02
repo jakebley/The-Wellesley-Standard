@@ -1,0 +1,48 @@
+---
+interface Props {
+  class?: string;
+}
+const { class: className } = Astro.props;
+---
+
+<svg
+  class={className}
+  viewBox="0 0 200 200"
+  role="img"
+  aria-label="Est. 1881 seal, Wellesley, Massachusetts"
+>
+  <defs>
+    <path id="seal-top-arc" d="M 22,100 A 78,78 0 0 1 178,100" />
+    <path id="seal-bottom-arc" d="M 22,100 A 78,78 0 0 0 178,100" />
+  </defs>
+
+  <circle cx="100" cy="100" r="94" fill="none" stroke="var(--color-ink, #0a0a0a)" stroke-width="2.5"></circle>
+  <circle cx="100" cy="100" r="80" fill="none" stroke="var(--color-accent, #b01f24)" stroke-width="1.75"></circle>
+
+  <text font-family="Inter, sans-serif" font-size="9.5" letter-spacing="2" fill="var(--color-ink, #0a0a0a)">
+    <textPath href="#seal-top-arc" startOffset="50%" text-anchor="middle">WELLESLEY · MASSACHUSETTS</textPath>
+  </text>
+  <text font-family="Inter, sans-serif" font-size="9.5" letter-spacing="2" fill="var(--color-ink, #0a0a0a)">
+    <textPath href="#seal-bottom-arc" startOffset="50%" text-anchor="middle">· THE WELLESLEY STANDARD ·</textPath>
+  </text>
+
+  <text
+    x="100"
+    y="90"
+    font-family="Inter, sans-serif"
+    font-size="9"
+    font-weight="600"
+    letter-spacing="3"
+    text-anchor="middle"
+    fill="var(--color-accent, #b01f24)">EST.</text
+  >
+  <text
+    x="100"
+    y="130"
+    font-family="Fraunces, serif"
+    font-size="40"
+    font-weight="600"
+    text-anchor="middle"
+    fill="var(--color-ink, #0a0a0a)">1881</text
+  >
+</svg>

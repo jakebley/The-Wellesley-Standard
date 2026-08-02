@@ -1,0 +1,113 @@
+/* Self-hosted brand fonts (Fontsource) — no external font requests */
+@import '@fontsource/fraunces/600.css';
+@import '@fontsource/fraunces/600-italic.css';
+@import '@fontsource/fraunces/900.css';
+@import '@fontsource/source-serif-4/400.css';
+@import '@fontsource/source-serif-4/400-italic.css';
+@import '@fontsource/source-serif-4/600.css';
+@import '@fontsource/inter/400.css';
+@import '@fontsource/inter/500.css';
+@import '@fontsource/inter/600.css';
+
+:root {
+  /* Brand palette — fixed identity, not derived */
+  --color-ink: #0a0a0a;
+  --color-paper: #fafaf8;
+  --color-accent: #b01f24;
+  --color-accent-ink: #7d1519; /* accent, darkened, for hover/active states */
+
+  /* Tinted neutrals derived from ink, for borders/muted surfaces */
+  --color-ink-muted: #0a0a0a99; /* ink at reduced opacity, for secondary text on paper */
+  --color-hairline: #0a0a0a1f;
+
+  --color-bg: var(--color-paper);
+  --color-fg: var(--color-ink);
+
+  --font-display: 'Fraunces', 'Iowan Old Style', serif;
+  --font-body: 'Source Serif 4', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, sans-serif;
+
+  /* Fluid type scale, ratio ~1.333 */
+  --text-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8rem);
+  --text-sm: clamp(0.875rem, 0.84rem + 0.15vw, 0.95rem);
+  --text-base: clamp(1rem, 0.97rem + 0.2vw, 1.125rem);
+  --text-lg: clamp(1.25rem, 1.15rem + 0.4vw, 1.5rem);
+  --text-xl: clamp(1.75rem, 1.5rem + 1vw, 2.25rem);
+  --text-2xl: clamp(2.25rem, 1.9rem + 1.5vw, 3.25rem);
+  --text-3xl: clamp(3rem, 2.4rem + 2.5vw, 5.5rem);
+
+  --space-1: 0.5rem;
+  --space-2: 1rem;
+  --space-3: 1.5rem;
+  --space-4: 2.5rem;
+  --space-5: 4rem;
+  --space-6: 6.5rem;
+
+  --content-max: 75ch;
+  --page-max: 90rem;
+
+  /* Semantic z-index scale */
+  --z-sticky: 10;
+  --z-dropdown: 20;
+  --z-modal-backdrop: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-body);
+  font-size: var(--text-base);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  margin: 0;
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+a {
+  color: inherit;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
