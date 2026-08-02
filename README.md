@@ -1,43 +1,28 @@
-# Astro Starter Kit: Minimal
+# 1881 — The Wellesley Standard
 
-```sh
-npm create astro@latest -- --template minimal
-```
+A magazine-style media and events site for Wellesley, Massachusetts.
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+Built with [Astro](https://astro.build). Content currently lives in local content
+collections (`src/content/`); see the master build plan for the Sanity CMS migration
+planned for Checkpoint 2.
 
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-├── src/
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
+## Commands
 
 All commands are run from the root of the project, from a terminal:
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+| Command             | Action                                           |
+| :------------------- | :----------------------------------------------- |
+| `npm install`         | Installs dependencies                            |
+| `npm run dev`          | Starts local dev server at `localhost:4321`      |
+| `npm run build`        | Build the production site to `./dist/`           |
+| `npm run preview`      | Preview the build locally, before deploying      |
+| `npx astro check`      | Type-check the project                           |
 
-## 👀 Want to learn more?
+## Project structure
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- `src/content/` — local content collections (House of the Week, Streets of Wellesley, Living Here, Events)
+- `src/content.config.ts` — content schemas
+- `src/pages/` — routes
+- `src/layouts/BaseLayout.astro` — shared nav/header/footer
+- `src/components/` — Logo, Seal (brand mark)
+- `src/styles/global.css` — design tokens (palette, type scale)
